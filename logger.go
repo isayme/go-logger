@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/rs/zerolog"
 
@@ -19,6 +20,7 @@ func init() {
 
 // SetLevel set log level
 func SetLevel(level string) error {
+	level = strings.ToLower(level)
 	lvl, err := zerolog.ParseLevel(level)
 	if err != nil {
 		return err
@@ -26,6 +28,21 @@ func SetLevel(level string) error {
 
 	zerolog.SetGlobalLevel(lvl)
 	return nil
+}
+
+// Trace trace log
+func Trace(args ...interface{}) {
+	log.Trace().Msg(fmt.Sprint(args...))
+}
+
+// Tracef trace log with format
+func Tracef(format string, args ...interface{}) {
+	log.Trace().Msgf(format, args...)
+}
+
+// Tracew trace log with additional context
+func Tracew(msg string, args ...interface{}) {
+	log.Trace().Fields(sweetenFields(args)).Msg(msg)
 }
 
 // Debug debug log
