@@ -2,6 +2,7 @@ package logger
 
 import (
 	"fmt"
+	"os"
 	"strings"
 
 	"github.com/rs/zerolog"
@@ -16,6 +17,16 @@ func init() {
 	log.Logger = log.With().Caller().Logger()
 
 	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+}
+
+func SetFormat(format string) {
+	switch format {
+	case "console":
+		log.Logger = log.Logger.Output(zerolog.ConsoleWriter{
+			Out:        os.Stderr,
+			TimeFormat: "15:04:05.000Z",
+		})
+	}
 }
 
 // SetLevel set log level
